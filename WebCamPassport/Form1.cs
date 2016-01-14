@@ -15,11 +15,14 @@ namespace WebCamPassport
     {
         private bool DeviceExist = false;
         private FilterInfoCollection videoDevices;
-        private VideoCaptureDevice videoSource = null;
+        private VideoCaptureDevice videoSource;
 
         public Form1()
         {
             InitializeComponent();
+            getCamList();
+            getCamSettings();
+            
         }
 
         // get the devices name
@@ -46,10 +49,37 @@ namespace WebCamPassport
             }
         }
 
+
+        #region Get Camera Settings
+        private void getCamSettings()
+        {
+            try
+            {
+                videoSource = new VideoCaptureDevice(videoDevices[comboBox1.SelectedIndex].MonikerString);
+                if (videoSource == null)
+                    throw new ApplicationException();
+
+                DeviceExist = true;
+                foreach (var capability in videoSource.VideoCapabilities)
+                {
+                    comboBox2.Items.Add(capability.FrameSize.ToString() + ":" + capability.MaximumFrameRate.ToString() + ":" + capability.BitCount.ToString());
+                }
+
+                comboBox2.SelectedIndex = 0;
+            }
+            catch (ApplicationException)
+            {
+                DeviceExist = false;
+                comboBox2.Items.Add("No capture device on your system");
+            }
+        } 
+        #endregion
+
         //refresh button
         private void rfsh_Click(object sender, EventArgs e)
         {
             getCamList();
+            getCamSettings();
         }
 
         //toggle start and stop button
@@ -59,11 +89,8 @@ namespace WebCamPassport
             {
                 if (DeviceExist)
                 {
-                    videoSource = new VideoCaptureDevice(videoDevices[comboBox1.SelectedIndex].MonikerString);
                     videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-                    CloseVideoSource();
-                    videoSource.DesiredFrameSize = new Size(160, 120);
-                    //videoSource.DesiredFrameRate = 10;
+                    videoSource.VideoResolution = videoSource.VideoCapabilities[comboBox2.SelectedIndex];
                     videoSource.Start();
                     label2.Text = "Device running...";
                     start.Text = "&Stop";
@@ -82,8 +109,21 @@ namespace WebCamPassport
                     CloseVideoSource();
                     label2.Text = "Device stopped.";
                     start.Text = "&Start";
+                    
+                    pictureBox1.Image = null;
                 }
             }
+        }
+
+        //take picture button
+        private void takePicture_Click(object sender, NewFrameEventArgs eventArgssnap)
+        {
+            Bitmap current = (Bitmap)eventArgssnap.Frame.Clone();
+            snapShot.Image = current;
+            //string filepath = Environment.CurrentDirectory;
+            //string filename = System.IO.Path.Combine(filepath, @"name.bmp");
+            //current.Save(filename);
+            //current.Dispose();
         }
 
         //eventhandler if new frame is ready
@@ -100,7 +140,7 @@ namespace WebCamPassport
             if (!(videoSource == null))
                 if (videoSource.IsRunning)
                 {
-                    videoSource.SignalToStop();
+                    videoSource.Stop();
                     videoSource = null;
                 }
         }
@@ -115,6 +155,11 @@ namespace WebCamPassport
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             CloseVideoSource();
+        }
+
+        private void takePicture_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
