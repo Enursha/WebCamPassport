@@ -22,7 +22,7 @@ namespace WebCamPassport
             InitializeComponent();
             getCamList();
             getCamSettings();
-            
+
         }
 
         // get the devices name
@@ -72,7 +72,7 @@ namespace WebCamPassport
                 DeviceExist = false;
                 comboBox2.Items.Add("No capture device on your system");
             }
-        } 
+        }
         #endregion
 
         //refresh button
@@ -89,6 +89,7 @@ namespace WebCamPassport
             {
                 if (DeviceExist)
                 {
+                    videoSource = new VideoCaptureDevice(videoDevices[comboBox1.SelectedIndex].MonikerString);
                     videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
                     videoSource.VideoResolution = videoSource.VideoCapabilities[comboBox2.SelectedIndex];
                     videoSource.Start();
@@ -109,29 +110,38 @@ namespace WebCamPassport
                     CloseVideoSource();
                     label2.Text = "Device stopped.";
                     start.Text = "&Start";
-                    
+
                     pictureBox1.Image = null;
                 }
             }
         }
 
         //take picture button
-        private void takePicture_Click(object sender, NewFrameEventArgs eventArgssnap)
-        {
-            Bitmap current = (Bitmap)eventArgssnap.Frame.Clone();
-            snapShot.Image = current;
-            //string filepath = Environment.CurrentDirectory;
-            //string filename = System.IO.Path.Combine(filepath, @"name.bmp");
-            //current.Save(filename);
-            //current.Dispose();
-        }
-
+        private void takePicture_Click(object sender, EventArgs e) { }
+        //{
+        //    apFrame;
+        //}
+        //private void apFrame()
+        //{
+        
+        //    Bitmap img = (Bitmap).Clone();
+        //    //do processing here
+        //    snapShot.Image = img;
+        //}
+    
+    
         //eventhandler if new frame is ready
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            Bitmap img = (Bitmap)eventArgs.Frame.Clone();
+            var img = (Bitmap)eventArgs.Frame.Clone();
             //do processing here
+            if (pictureBox1.Image != null) {
+               pictureBox1.Image.Dispose();
+               
+            }
             pictureBox1.Image = img;
+                
+            
         }
 
         //close the device safely
@@ -157,9 +167,6 @@ namespace WebCamPassport
             CloseVideoSource();
         }
 
-        private void takePicture_Click(object sender, EventArgs e)
-        {
-
-        }
+        
     }
 }

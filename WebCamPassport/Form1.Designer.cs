@@ -31,14 +31,14 @@
             this.components = new System.ComponentModel.Container();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.snapShot = new System.Windows.Forms.PictureBox();
+            this.takePicture = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.start = new System.Windows.Forms.Button();
             this.rfsh = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.takePicture = new System.Windows.Forms.Button();
-            this.snapShot = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.snapShot)).BeginInit();
@@ -67,6 +67,26 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 462);
             this.panel1.TabIndex = 1;
+            // 
+            // snapShot
+            // 
+            this.snapShot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.snapShot.Location = new System.Drawing.Point(71, 315);
+            this.snapShot.Name = "snapShot";
+            this.snapShot.Size = new System.Drawing.Size(123, 108);
+            this.snapShot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.snapShot.TabIndex = 4;
+            this.snapShot.TabStop = false;
+            // 
+            // takePicture
+            // 
+            this.takePicture.Location = new System.Drawing.Point(30, 219);
+            this.takePicture.Name = "takePicture";
+            this.takePicture.Size = new System.Drawing.Size(186, 63);
+            this.takePicture.TabIndex = 2;
+            this.takePicture.Text = "Take Picture";
+            this.takePicture.UseVisualStyleBackColor = true;
+            this.takePicture.Click += new System.EventHandler(this.takePicture_Click);
             // 
             // comboBox2
             // 
@@ -113,26 +133,6 @@
             this.rfsh.UseVisualStyleBackColor = true;
             this.rfsh.Click += new System.EventHandler(this.rfsh_Click);
             // 
-            // takePicture
-            // 
-            this.takePicture.Location = new System.Drawing.Point(30, 219);
-            this.takePicture.Name = "takePicture";
-            this.takePicture.Size = new System.Drawing.Size(186, 63);
-            this.takePicture.TabIndex = 2;
-            this.takePicture.Text = "Take Picture";
-            this.takePicture.UseVisualStyleBackColor = true;
-            this.takePicture.Click += new System.EventHandler(this.takePicture_Click);
-            // 
-            // snapShot
-            // 
-            this.snapShot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.snapShot.Location = new System.Drawing.Point(71, 315);
-            this.snapShot.Name = "snapShot";
-            this.snapShot.Size = new System.Drawing.Size(123, 108);
-            this.snapShot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.snapShot.TabIndex = 4;
-            this.snapShot.TabStop = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -142,7 +142,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
