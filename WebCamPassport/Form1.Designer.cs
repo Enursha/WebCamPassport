@@ -39,6 +39,7 @@
             this.start = new System.Windows.Forms.Button();
             this.rfsh = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.snapShot)).BeginInit();
@@ -56,6 +57,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.snapShot);
             this.panel1.Controls.Add(this.takePicture);
             this.panel1.Controls.Add(this.comboBox2);
@@ -65,7 +67,7 @@
             this.panel1.Controls.Add(this.rfsh);
             this.panel1.Location = new System.Drawing.Point(26, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(278, 462);
+            this.panel1.Size = new System.Drawing.Size(278, 524);
             this.panel1.TabIndex = 1;
             // 
             // snapShot
@@ -133,6 +135,16 @@
             this.rfsh.UseVisualStyleBackColor = true;
             this.rfsh.Click += new System.EventHandler(this.rfsh_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(93, 461);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,6 +174,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button takePicture;
         private System.Windows.Forms.PictureBox snapShot;
+        private System.Windows.Forms.Button button1;
     }
 }
 
