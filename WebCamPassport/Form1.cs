@@ -16,13 +16,17 @@ namespace WebCamPassport
         private bool DeviceExist = false;
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSource;
-        int cropX, cropY, cropWidth, cropHeight;
+        UserRect rect;
+        public int heightRatio;
+        public int widthRartio;
 
         public Form1()
         {
             InitializeComponent();
             getCamList();
             getCamSettings();
+            comboBox3.Items.Add("Passport");
+            comboBox3.SelectedIndex = 0;
         }
 
         // get the devices name
@@ -117,88 +121,50 @@ namespace WebCamPassport
         }
 
         //take picture button
-        private void takePicture_Click(object sender, EventArgs e)
+        private void takePic_Click(object sender, EventArgs e)
         {
-            timer1.Enabled = false;
-            CloseVideoSource();
-            label2.Text = "Device stopped.";
-            start.Text = "&Start";
+          
+        }
+
+
+        #region Box
+        
+        //Mouse Down
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+          
+        }
+
+        //Mouse Move
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+           
         }
 
         //Mouse Up
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            Cursor = Cursors.Default;
-            if (cropWidth < 1)
-            {
-                return;
-            }
-            Rectangle rect = new Rectangle(cropX, cropY, cropWidth, cropHeight);
-            Bitmap bit = new Bitmap(pictureBox1.Image, pictureBox1.Width, pictureBox1.Height);
-            Bitmap crop = new Bitmap(cropWidth, cropHeight);
-            //Graphics gfx = Graphics.FromImage(crop);
-            //gfx.InterpolationMode = InterpolationMode.HighQualityBicubic;//here add  System.Drawing.Drawing2D namespace;
-            //gfx.PixelOffsetMode = PixelOffsetMode.HighQuality;//here add  System.Drawing.Drawing2D namespace;
-            //gfx.CompositingQuality = CompositingQuality.HighQuality;//here add  System.Drawing.Drawing2D namespace;
-            //gfx.DrawImage(bit, 0, 0, rect, GraphicsUnit.Pixel);
-            //snapShot.Image = crop;
-            pictureBox1.Refresh();
-        }
 
-        // Mouse Move
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        {
-            //if (pictureBox1.Image == null)
-            // return;
-
-            if (e.Button == MouseButtons.Left)//here i have use mouse click left button only
-            {
-                pictureBox1.Refresh();
-                cropWidth = e.X - cropX;
-                cropHeight = e.Y - cropY;
-            }
-            pictureBox1.Refresh();
         }
-        
-        //here rectangle border pen color=red and size=2;
-        Pen borderpen = new Pen(Color.Red, 2);
-        //fill the rectangle color =white
-        SolidBrush rectbrush = new SolidBrush(Color.FromArgb(100, Color.White));
 
         //Paint
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Rectangle rect = new Rectangle(cropX, cropY, cropWidth, cropHeight);
-            Graphics gfx = e.Graphics;
-            gfx.DrawRectangle(borderpen, rect);
-            gfx.FillRectangle(rectbrush, rect);
+            
         }
-
-        //Mouse Down
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)//here i have use mouse click left button only
-            {
-                pictureBox1.Refresh();
-                cropX = e.X;
-                cropY = e.Y;
-                Cursor = Cursors.Cross;
-             }
-            pictureBox1.Refresh();
-        }
+        #endregion
 
         //eventhandler if new frame is ready
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             var img = (Bitmap)eventArgs.Frame.Clone();
             //do processing here
-            if (pictureBox1.Image != null) {
-               pictureBox1.Image.Dispose();
-               
+            if (pictureBox1.Image != null)
+            {
+                pictureBox1.Image.Dispose();  
             }
+
             pictureBox1.Image = img;
-                
-            
         }
 
         //close the device safely
@@ -224,6 +190,26 @@ namespace WebCamPassport
             CloseVideoSource();
         }
 
-        
+        //Begin Crop
+        private void cropPic_Click(object sender, EventArgs e)
+        {
+            rect = new UserRect(new Rectangle(10, 10, 100, 100));
+            rect.SetPictureBox(pictureBox1);
+            timer1.Enabled = false;
+            CloseVideoSource();
+            label2.Text = "Device stopped.";
+            start.Text = "&Start";
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }
