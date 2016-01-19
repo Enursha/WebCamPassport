@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using AForge.Video;
 using AForge.Video.DirectShow;
 
+
 namespace WebCamPassport
 {
     public partial class Form1 : Form
@@ -16,9 +17,8 @@ namespace WebCamPassport
         private bool DeviceExist = false;
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSource;
-        UserRect rect;
-        public int heightRatio;
-        public int widthRartio;
+        UserRect cropBox;
+         
 
         public Form1()
         {
@@ -27,6 +27,7 @@ namespace WebCamPassport
             getCamSettings();
             comboBox3.Items.Add("Passport");
             comboBox3.SelectedIndex = 0;
+            
         }
 
         // get the devices name
@@ -128,30 +129,12 @@ namespace WebCamPassport
 
 
         #region Box
-        
-        //Mouse Down
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-          
-        }
 
-        //Mouse Move
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
-        {
-           
-        }
-
-        //Mouse Up
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        //Paint
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        private void Box()
         {
             
         }
+
         #endregion
 
         //eventhandler if new frame is ready
@@ -165,6 +148,7 @@ namespace WebCamPassport
             }
 
             pictureBox1.Image = img;
+           
         }
 
         //close the device safely
@@ -193,13 +177,18 @@ namespace WebCamPassport
         //Begin Crop
         private void cropPic_Click(object sender, EventArgs e)
         {
-            rect = new UserRect(new Rectangle(10, 10, 100, 100));
-            rect.SetPictureBox(pictureBox1);
+            cropBox = new UserRect(new Rectangle(10, 10, 45, 55));
+            cropBox.SetPictureBox(pictureBox1);
             timer1.Enabled = false;
             CloseVideoSource();
             label2.Text = "Device stopped.";
             start.Text = "&Start";
+        }
 
+        public void boxRatio()
+        {
+            cropBox.ratio = 0.33f;
+            cropBox.allowDeformingDuringMovement = false;
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,9 +196,9 @@ namespace WebCamPassport
 
         }
 
-        private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            e.Handled = true;
+            label1.Text = cropBox.rect.Height.ToString();
         }
     }
 }
