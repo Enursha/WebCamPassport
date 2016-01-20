@@ -124,7 +124,7 @@ namespace WebCamPassport
         //take picture button
         private void takePic_Click(object sender, EventArgs e)
         {
-          
+            snapShot.Image = pictureBox1.Image;
         }
 
 
@@ -140,15 +140,10 @@ namespace WebCamPassport
         //eventhandler if new frame is ready
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            var img = (Bitmap)eventArgs.Frame.Clone();
-            //do processing here
-            if (pictureBox1.Image != null)
-            {
-                pictureBox1.Image.Dispose();  
-            }
-
+            Bitmap img = (Bitmap)eventArgs.Frame.Clone();
             pictureBox1.Image = img;
-           
+            pictureBox1.Invalidate();
+            GC.Collect();
         }
 
         //close the device safely
@@ -179,17 +174,16 @@ namespace WebCamPassport
         {
             cropBox = new UserRect(new Rectangle(10, 10, 45, 55));
             cropBox.SetPictureBox(pictureBox1);
+            pictureBox1.Refresh();
+            cropBox.ratio = 1.33f;
+            cropBox.allowDeformingDuringMovement = true;
             timer1.Enabled = false;
             CloseVideoSource();
             label2.Text = "Device stopped.";
             start.Text = "&Start";
         }
 
-        public void boxRatio()
-        {
-            cropBox.ratio = 0.33f;
-            cropBox.allowDeformingDuringMovement = false;
-        }
+       
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -198,7 +192,52 @@ namespace WebCamPassport
 
         private void button1_Click(object sender, EventArgs e)
         {
-            label1.Text = cropBox.rect.Height.ToString();
+            Point p = cropBox.rect.Location;
+            Point unscaled_p = new Point();
+            int unscaled_height;
+            int unscaled_width;
+
+            // image and container dimensions
+            int w_i = pictureBox1.Image.Width;
+            int h_i = pictureBox1.Image.Height;
+            int w_c = pictureBox1.Width;
+            int h_c = pictureBox1.Height;
+
+            float imageRatio = w_i / (float)h_i; // image W:H ratio
+            float containerRatio = w_c / (float)h_c; // container W:H ratio
+
+            if (imageRatio >= containerRatio)
+            {
+                // horizontal image
+                float scaleFactor = w_c / (float)w_i;
+                float scaledHeight = h_i * scaleFactor;
+                // calculate gap between top of container and top of image
+                float filler = Math.Abs(h_c - scaledHeight) / 2;
+                //unscaled_p.X = (int)(p.X / scaleFactor);
+                //unscaled_p.Y = (int)((p.Y - filler) / scaleFactor);
+                unscaled_p.X = (int)(p.X / scaleFactor);
+                unscaled_p.Y = (int)((p.Y - filler) / scaleFactor);
+                unscaled_width = (int)(cropBox.rect.Width / scaleFactor);
+                unscaled_height = (int)(cropBox.rect.Height / scaleFactor);
+            }
+            else
+            {
+                // vertical image
+                float scaleFactor = h_c / (float)h_i;
+                float scaledWidth = w_i * scaleFactor;
+                float filler = Math.Abs(w_c - scaledWidth) / 2;
+                unscaled_p.X = (int)((p.X - filler) / scaleFactor);
+                unscaled_p.Y = (int)(p.Y / scaleFactor);
+                unscaled_width = (int)(cropBox.rect.Width / scaleFactor);
+                unscaled_height = (int)(cropBox.rect.Height / scaleFactor);
+            }
+            label1.Text = unscaled_p.X.ToString() +" " +unscaled_p.Y.ToString() +" " +unscaled_width.ToString() +" " +unscaled_height.ToString();
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            pictureBox1.Image = snapShot.Image;
         }
     }
 }

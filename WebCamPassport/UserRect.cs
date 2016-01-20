@@ -169,12 +169,16 @@ namespace WebCamPassport
                 rect = backupRect;
             }
 
-            if (ratio > 1 & rect.Height > 100) rect.Height = (int)(1f * rect.Width * ratio);
+            if (ratio > 1 ) rect.Height = (int)(1f * rect.Width * ratio);
             else rect.Width = (int)(1f * rect.Height / ratio);
 
 
 
             TestIfRectInsideArea();
+
+            //Ratio
+            if (ratio > 1 ) rect.Height = (int)(1f * rect.Width * ratio);
+            else rect.Width = (int)(1f * rect.Height / ratio);
 
             mPictureBox.Invalidate();
         }
