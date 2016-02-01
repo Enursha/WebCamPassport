@@ -20,15 +20,18 @@ namespace WebCamPassport
         private VideoCaptureDevice videoSource;
         UserRect cropBox;
         Bitmap croppedbmp;
-        
+                
 
         public Form1()
         {
             InitializeComponent();
             getCamList();
             getCamSettings();
+            comboBox3.Items.Add("No Ratio");
             comboBox3.Items.Add("Passport");
-            comboBox3.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 1;
+            getRatio();
+            
             
         }
 
@@ -174,15 +177,7 @@ namespace WebCamPassport
         }
 
 
-        #region Box
-
-        private void Box()
-        {
-            
-        }
-
-        #endregion
-
+      
         //eventhandler if new frame is ready
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
@@ -220,20 +215,33 @@ namespace WebCamPassport
         {
             cropBox = new UserRect(new Rectangle(10, 10, 45, 55));
             cropBox.SetPictureBox(pictureBox1);
-            pictureBox1.Refresh();
-            cropBox.ratio = 1.33f;
+            getRatio();
             cropBox.allowDeformingDuringMovement = true;
             timer1.Enabled = false;
             CloseVideoSource();
             label2.Text = "Device stopped.";
             start.Text = "&Start";
+            pictureBox1.Invalidate();
+            
         }
 
-       
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void getRatio ()
         {
+            if (comboBox3.SelectedIndex == 0)
+            {
+                cropBox.ratioEnable = false;
+            }
+            if (comboBox3.SelectedIndex == 1)
+            {
+                cropBox.ratioEnable = true;
+                cropBox.ratio = 1.33f;
+            }
+            
+        }
 
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            getRatio();
         }
 
         private void button1_Click(object sender, EventArgs e)
