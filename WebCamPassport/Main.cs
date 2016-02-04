@@ -13,16 +13,15 @@ using AForge.Video.DirectShow;
 
 namespace WebCamPassport
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
         private bool DeviceExist = false;
         private FilterInfoCollection videoDevices;
         private VideoCaptureDevice videoSource;
         UserRect cropBox;
         Bitmap croppedbmp;
-                
-
-        public Form1()
+        
+        public Main()
         {
             InitializeComponent();
             getCamList();
@@ -30,9 +29,6 @@ namespace WebCamPassport
             comboBox3.Items.Add("No Ratio");
             comboBox3.Items.Add("Passport");
             comboBox3.SelectedIndex = 1;
-            getRatio();
-            
-            
         }
 
         // get the devices name
@@ -225,18 +221,19 @@ namespace WebCamPassport
             
         }
 
+        //GetRatio
         private void getRatio ()
         {
             if (comboBox3.SelectedIndex == 0)
             {
-                cropBox.ratioEnable = false;
+                UserRect.ratioEnabled = false;
             }
             if (comboBox3.SelectedIndex == 1)
             {
-                cropBox.ratioEnable = true;
-                cropBox.ratio = 1.33f;
+                UserRect.ratioEnabled = true;
+                UserRect.ratio = 1.33f;
             }
-            
+
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
@@ -249,7 +246,7 @@ namespace WebCamPassport
             
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Images|*.png;*.bmp;*.jpg";
-            ImageFormat format = ImageFormat.Png;
+            ImageFormat format = ImageFormat.Jpeg;
             if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string ext = System.IO.Path.GetExtension(sfd.FileName);
@@ -260,6 +257,9 @@ namespace WebCamPassport
                         break;
                     case ".bmp":
                         format = ImageFormat.Bmp;
+                        break;
+                    case ".png":
+                        format = ImageFormat.Png;
                         break;
                 }
                 snapShot.Image.Save(sfd.FileName, format);

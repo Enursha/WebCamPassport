@@ -19,8 +19,8 @@ namespace WebCamPassport
         private int sizeNodeRect = 5;
         private Bitmap mBmp = null;
         private PosSizableRect nodeSelected = PosSizableRect.None;
-        public float ratio;
-        public bool ratioEnable = false;
+        public static float ratio = 1.33f;
+        public static bool ratioEnabled;
 
         private enum PosSizableRect
         {
@@ -32,6 +32,7 @@ namespace WebCamPassport
 
         }
 
+       
         public UserRect(Rectangle r)
         {
             rect = r;
@@ -163,7 +164,7 @@ namespace WebCamPassport
         //testRatio
         private void testRatio()
         {
-            if (ratioEnable == true)
+            if (ratioEnabled == true)
             {
                 if (rect.Width != (int)(1f * rect.Height / ratio))
                 {
@@ -171,6 +172,8 @@ namespace WebCamPassport
                 }
             }
         }
+
+        
 
         private void TestIfRectInsideArea()
         {
@@ -268,4 +271,5 @@ namespace WebCamPassport
         }
 
     }
+
 }
