@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace WebCamPassport
 {
-    public partial class options : Form
+    public partial class Options : Form
     {
-        public options()
+        public Options()
         {
             InitializeComponent();
         }

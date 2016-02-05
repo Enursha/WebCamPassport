@@ -15,77 +15,27 @@ namespace WebCamPassport
 {
     public partial class Main : Form
     {
-        private bool DeviceExist = false;
-        private FilterInfoCollection videoDevices;
-        private VideoCaptureDevice videoSource;
-        UserRect cropBox;
+       
+        CropBox cropBox;
         Bitmap croppedbmp;
+        
         
         public Main()
         {
             InitializeComponent();
-            getCamList();
-            getCamSettings();
+            WebCam.GetVideoImage(pictureBox1);
+            WebCam.GetCamList(MainWebCamList);
+            WebCam.GetCamSettings(MainWebCamSettings);
             comboBox3.Items.Add("No Ratio");
             comboBox3.Items.Add("Passport");
             comboBox3.SelectedIndex = 1;
         }
 
-        // get the devices name
-        private void getCamList()
-        {
-            try
-            {
-                videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-                comboBox1.Items.Clear();
-                if (videoDevices.Count == 0)
-                    throw new ApplicationException();
-
-                DeviceExist = true;
-                foreach (FilterInfo device in videoDevices)
-                {
-                    comboBox1.Items.Add(device.Name);
-                }
-                comboBox1.SelectedIndex = 0; //make default to first cam
-            }
-            catch (ApplicationException)
-            {
-                DeviceExist = false;
-                comboBox1.Items.Add("No capture device on your system");
-            }
-        }
-
-
-        #region Get Camera Settings
-        private void getCamSettings()
-        {
-            try
-            {
-                videoSource = new VideoCaptureDevice(videoDevices[comboBox1.SelectedIndex].MonikerString);
-                if (videoSource == null)
-                    throw new ApplicationException();
-
-                DeviceExist = true;
-                foreach (var capability in videoSource.VideoCapabilities)
-                {
-                    comboBox2.Items.Add(capability.FrameSize.ToString() + ":" + capability.MaximumFrameRate.ToString() + ":" + capability.BitCount.ToString());
-                }
-
-                comboBox2.SelectedIndex = 0;
-            }
-            catch (ApplicationException)
-            {
-                DeviceExist = false;
-                comboBox2.Items.Add("No capture device on your system");
-            }
-        }
-        #endregion
-
         //refresh button
         private void rfsh_Click(object sender, EventArgs e)
         {
-            getCamList();
-            getCamSettings();
+            WebCam.GetCamList(MainWebCamList);
+            WebCam.GetCamSettings(MainWebCamSettings);
         }
 
         //toggle start and stop button
@@ -93,34 +43,22 @@ namespace WebCamPassport
         {
             if (start.Text == "&Start")
             {
-                if (DeviceExist)
-                {
-                    videoSource = new VideoCaptureDevice(videoDevices[comboBox1.SelectedIndex].MonikerString);
-                    videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-                    videoSource.VideoResolution = videoSource.VideoCapabilities[comboBox2.SelectedIndex];
-                    videoSource.Start();
-                    label2.Text = "Device running...";
-                    start.Text = "&Stop";
-                    timer1.Enabled = true;
-                }
-                else
-                {
-                    label2.Text = "Error: No Device selected.";
-                }
+                WebCam.StartWebCam();
+                label2.Text = "Device running...";
+                start.Text = "&Stop";
+                timer1.Enabled = true;
+
             }
             else
             {
-                if (videoSource.IsRunning)
-                {
-                    timer1.Enabled = false;
-                    CloseVideoSource();
-                    label2.Text = "Device stopped.";
-                    start.Text = "&Start";
-
-                    pictureBox1.Image = null;
-                }
+                timer1.Enabled = false;
+                WebCam.CloseVideoSource();
+                label2.Text = "Device stopped.";
+                start.Text = "&Start";
+                pictureBox1.Image = null;
             }
-        }
+         }
+        
 
         //take picture button
         private void takePic_Click(object sender, EventArgs e)
@@ -174,47 +112,31 @@ namespace WebCamPassport
 
 
       
-        //eventhandler if new frame is ready
-        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
-        {
-            Bitmap img = (Bitmap)eventArgs.Frame.Clone();
-            pictureBox1.Image = img;
-            pictureBox1.Invalidate();
-            GC.Collect();
-        }
+        
 
-        //close the device safely
-        private void CloseVideoSource()
-        {
-            if (!(videoSource == null))
-                if (videoSource.IsRunning)
-                {
-                    videoSource.Stop();
-                    videoSource = null;
-                }
-        }
+        
 
         //get total received frame at 1 second tick
         private void timer1_Tick(object sender, EventArgs e)
         {
-            label2.Text = "Device running... " + videoSource.FramesReceived.ToString() + " FPS";
+            label2.Text = "Device running... ";
         }
 
         //prevent sudden close while device is running
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            CloseVideoSource();
+            WebCam.CloseVideoSource();
         }
 
         //Begin Crop
         private void cropPic_Click(object sender, EventArgs e)
         {
-            cropBox = new UserRect(new Rectangle(10, 10, 45, 55));
+            cropBox = new CropBox(new Rectangle(10, 10, 45, 55));
             cropBox.SetPictureBox(pictureBox1);
             getRatio();
             cropBox.allowDeformingDuringMovement = true;
             timer1.Enabled = false;
-            CloseVideoSource();
+            WebCam.CloseVideoSource();
             label2.Text = "Device stopped.";
             start.Text = "&Start";
             pictureBox1.Invalidate();
@@ -226,12 +148,12 @@ namespace WebCamPassport
         {
             if (comboBox3.SelectedIndex == 0)
             {
-                UserRect.ratioEnabled = false;
+                CropBox.ratioEnabled = false;
             }
             if (comboBox3.SelectedIndex == 1)
             {
-                UserRect.ratioEnabled = true;
-                UserRect.ratio = 1.33f;
+                CropBox.ratioEnabled = true;
+                CropBox.ratio = 1.33f;
             }
 
         }

@@ -5,9 +5,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
+
 namespace WebCamPassport
 {
-    public class UserRect
+    public class CropBox
     {
         private PictureBox mPictureBox;
         public Rectangle rect;
@@ -33,7 +34,7 @@ namespace WebCamPassport
         }
 
        
-        public UserRect(Rectangle r)
+        public CropBox(Rectangle r)
         {
             rect = r;
             mIsClick = false;
