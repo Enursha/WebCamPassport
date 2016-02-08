@@ -11,7 +11,7 @@ namespace WebCamPassport
     public class CropBox
     {
         private PictureBox mPictureBox;
-        public Rectangle rect;
+        public static Rectangle rect;
         public bool allowDeformingDuringMovement = false;
         private bool mIsClick = false;
         private bool mMove = false;
@@ -22,12 +22,18 @@ namespace WebCamPassport
         private PosSizableRect nodeSelected = PosSizableRect.None;
         public static float ratio = 1.33f;
         public static bool ratioEnabled;
+        public static Bitmap croppedbmp;
+        public static PictureBox pictureBox1 = new PictureBox();
+        public static PictureBox snapShot = new PictureBox();
+        public static int w_i;
+        
+
 
         private enum PosSizableRect
         {
-            LeftBottom,
-            LeftUp,
-            RightUp,
+          //  LeftBottom,
+          //  LeftUp,
+          //  RightUp,
             RightBottom,
             None
 
@@ -100,8 +106,10 @@ namespace WebCamPassport
 
         private void mPictureBox_MouseUp(object sender, MouseEventArgs e)
         {
+            Main snap = new Main();
             mIsClick = false;
             mMove = false;
+            //TakePic(pictureBox1, snapShot);
         }
 
         private void mPictureBox_MouseMove(object sender, MouseEventArgs e)
@@ -116,25 +124,25 @@ namespace WebCamPassport
 
             switch (nodeSelected)
             {
-                case PosSizableRect.LeftUp:
-                    rect.X += e.X - oldX;
-                    rect.Width -= e.X - oldX;
-                    rect.Y += e.Y - oldY;
-                    rect.Height -= e.Y - oldY;
-                    testRatio();
-                    break;
-               case PosSizableRect.LeftBottom:
-                    rect.Width -= e.X - oldX;
-                    rect.X += e.X - oldX;
-                    rect.Height += e.Y - oldY;
-                    testRatio();
-                    break;
-               case PosSizableRect.RightUp:
-                    rect.Width += e.X - oldX;
-                    rect.Y += e.Y - oldY;
-                    rect.Height -= e.Y - oldY;
-                    testRatio();
-                    break;
+               // case PosSizableRect.LeftUp:
+               //     rect.X += e.X - oldX;
+               //     rect.Width -= e.X - oldX;
+               //     rect.Y += e.Y - oldY;
+               //     rect.Height -= e.Y - oldY;
+               //     testRatio();
+               //     break;
+               //case PosSizableRect.LeftBottom:
+               //     rect.Width -= e.X - oldX;
+               //     rect.X += e.X - oldX;
+               //     rect.Height += e.Y - oldY;
+               //     testRatio();
+               //     break;
+               //case PosSizableRect.RightUp:
+               //     rect.Width += e.X - oldX;
+               //     rect.Y += e.Y - oldY;
+               //     rect.Height -= e.Y - oldY;
+               //     testRatio();
+               //     break;
                 case PosSizableRect.RightBottom:
                     rect.Width += e.X - oldX;
                     rect.Height += e.Y - oldY;
@@ -211,14 +219,14 @@ namespace WebCamPassport
         {
             switch (p)
             {
-                case PosSizableRect.LeftUp:
-                    return CreateRectSizableNode(rect.X, rect.Y);
+                //case PosSizableRect.LeftUp:
+                //    return CreateRectSizableNode(rect.X, rect.Y);
 
-                case PosSizableRect.LeftBottom:
-                    return CreateRectSizableNode(rect.X, rect.Y + rect.Height);
+                //case PosSizableRect.LeftBottom:
+                //    return CreateRectSizableNode(rect.X, rect.Y + rect.Height);
 
-                case PosSizableRect.RightUp:
-                    return CreateRectSizableNode(rect.X + rect.Width, rect.Y);
+                //case PosSizableRect.RightUp:
+                //    return CreateRectSizableNode(rect.X + rect.Width, rect.Y);
 
                 case PosSizableRect.RightBottom:
                     return CreateRectSizableNode(rect.X + rect.Width, rect.Y + rect.Height);
@@ -254,14 +262,14 @@ namespace WebCamPassport
         {
             switch (p)
             {
-                case PosSizableRect.LeftUp:
-                    return Cursors.SizeNWSE;
+                //case PosSizableRect.LeftUp:
+                //    return Cursors.SizeNWSE;
                 
-                case PosSizableRect.LeftBottom:
-                    return Cursors.SizeNESW;
+                //case PosSizableRect.LeftBottom:
+                //    return Cursors.SizeNESW;
                 
-                case PosSizableRect.RightUp:
-                    return Cursors.SizeNESW;
+                //case PosSizableRect.RightUp:
+                //    return Cursors.SizeNESW;
 
                 case PosSizableRect.RightBottom:
                     return Cursors.SizeNWSE;
@@ -269,6 +277,63 @@ namespace WebCamPassport
                 default:
                     return Cursors.Default;
             }
+        }
+
+        public static void TakePic(PictureBox c, PictureBox s)
+        {
+            
+            pictureBox1 = c;
+            snapShot = s;
+
+            Point p = rect.Location;
+            Point unscaled_p = new Point();
+            int unscaled_height = new int();
+            int unscaled_width = new int();
+
+            //int w_i = new int();
+            int h_i = new int();
+            int w_c = new int();
+            int h_c = new int();
+
+            // image and container dimensions
+            w_i = pictureBox1.Image.Width;
+            h_i = pictureBox1.Image.Height;
+            w_c = pictureBox1.Width;
+            h_c = pictureBox1.Height;
+
+            float imageRatio = w_i / (float)h_i; // image W:H ratio
+            float containerRatio = w_c / (float)h_c; // container W:H ratio
+
+            if (imageRatio >= containerRatio)
+            {
+                // horizontal image
+                float scaleFactor = w_c / (float)w_i;
+                float scaledHeight = h_i * scaleFactor;
+                // calculate gap between top of container and top of image
+                float filler = Math.Abs(h_c - scaledHeight) / 2;
+                unscaled_p.X = (int)(p.X / scaleFactor);
+                unscaled_p.Y = (int)((p.Y - filler) / scaleFactor);
+                unscaled_width = (int)(rect.Width / scaleFactor);
+                unscaled_height = (int)(rect.Height / scaleFactor);
+            }
+            else
+            {
+                // vertical image
+                float scaleFactor = h_c / (float)h_i;
+                float scaledWidth = w_i * scaleFactor;
+                float filler = Math.Abs(w_c - scaledWidth) / 2;
+                unscaled_p.X = (int)((p.X - filler) / scaleFactor);
+                unscaled_p.Y = (int)(p.Y / scaleFactor);
+                unscaled_width = (int)(rect.Width / scaleFactor);
+                unscaled_height = (int)(rect.Height / scaleFactor);
+            }
+
+
+            Rectangle cropBoxUnscaled = new Rectangle(unscaled_p.X, unscaled_p.Y, unscaled_width, unscaled_height);
+            Bitmap bmp = new Bitmap(pictureBox1.Image);
+            croppedbmp = bmp.Clone(cropBoxUnscaled, bmp.PixelFormat);
+            snapShot.Image = croppedbmp;
+            snapShot.Invalidate();
         }
 
     }
