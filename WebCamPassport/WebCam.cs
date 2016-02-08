@@ -17,11 +17,10 @@ namespace WebCamPassport
         private static VideoCaptureDevice videoSource;
         private static ComboBox WebCamList;
         private static ComboBox WebCamSettings;
-        private static PictureBox VideoImage;
-        private static PictureBox VideoImageSend;
+        public static PictureBox VideoImage;
 
         //GetCamList
-        public static void GetCamList(ComboBox c)
+        public static void GetCamListCombobox(ComboBox c)
             
         {
             WebCamList = c;
@@ -30,12 +29,20 @@ namespace WebCamPassport
             {
                 VideoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 WebCamList.Items.Clear();
-                //DeviceExist = true;
+
                 foreach (FilterInfo device in VideoDevices)
                 {
                     WebCamList.Items.Add(device.Name);
                 }
-                WebCamList.SelectedIndex = 0; //First cam found is default
+
+                if (Properties.Settings.Default.WebCamDevice == null)
+                {
+                    WebCamList.SelectedIndex = 0; //First cam found is default
+                }
+                else
+                {
+                    WebCamList.SelectedIndex = WebCamList.FindString(Properties.Settings.Default.WebCamDevice);
+                }
             }
             catch (ApplicationException)
             {
@@ -45,23 +52,28 @@ namespace WebCamPassport
         }
 
         //GetCamSettings
-        public static void GetCamSettings(ComboBox c)
+        public static void GetCamSettingsCombobox(ComboBox c)
         {
             WebCamSettings = c;
 
             try
             {
                 videoSource = new VideoCaptureDevice(VideoDevices[WebCamList.SelectedIndex].MonikerString);
-                if (videoSource == null)
-                    throw new ApplicationException();
-
+                WebCamSettings.Items.Clear();
                 //DeviceExist = true;
                 foreach (var capability in videoSource.VideoCapabilities)
                 {
                     WebCamSettings.Items.Add(capability.FrameSize.ToString() + ":" + capability.MaximumFrameRate.ToString() + ":" + capability.BitCount.ToString());
                 }
 
-                WebCamSettings.SelectedIndex = 0;
+                if (Properties.Settings.Default.WebCamResolution == null || Properties.Settings.Default.WebCamDevice != Convert.ToString(WebCamList.SelectedItem))
+                {
+                    WebCamSettings.SelectedIndex = 0;
+                }
+                else
+                {
+                    WebCamSettings.SelectedIndex = WebCamSettings.FindString(Properties.Settings.Default.WebCamResolution);
+                }
             }
             catch (ApplicationException)
             {
@@ -95,18 +107,15 @@ namespace WebCamPassport
         //eventhandler if new frame is ready
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            VideoImage = new PictureBox();
             Bitmap img = (Bitmap)eventArgs.Frame.Clone();
             VideoImage.Image = img;
             VideoImage.Invalidate();
             GC.Collect();
         }
-        
+
         public static void GetVideoImage(PictureBox p)
         {
-            VideoImageSend = new PictureBox();
-            p = VideoImageSend;
-            VideoImageSend.Image = VideoImage.Image;
+          VideoImage = p;
         }
     }
 }

@@ -22,5 +22,53 @@ namespace WebCamPassport.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WebCamDevice {
+            get {
+                return ((string)(this["WebCamDevice"]));
+            }
+            set {
+                this["WebCamDevice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WebCamResolution {
+            get {
+                return ((string)(this["WebCamResolution"]));
+            }
+            set {
+                this["WebCamResolution"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SaveLocation {
+            get {
+                return ((string)(this["SaveLocation"]));
+            }
+            set {
+                this["SaveLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Ratio {
+            get {
+                return ((string)(this["Ratio"]));
+            }
+            set {
+                this["Ratio"] = value;
+            }
+        }
     }
 }

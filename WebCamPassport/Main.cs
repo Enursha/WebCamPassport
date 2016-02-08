@@ -15,27 +15,18 @@ namespace WebCamPassport
 {
     public partial class Main : Form
     {
-       
+        public static string saveLocation;
         CropBox cropBox;
         Bitmap croppedbmp;
-        
-        
+
+
         public Main()
         {
             InitializeComponent();
+            Options settingsForm = new Options();
+            WebCam.GetCamListCombobox(settingsForm.OptionsWebCamList);
+            WebCam.GetCamSettingsCombobox(settingsForm.OptionsWebCamSettings);
             WebCam.GetVideoImage(pictureBox1);
-            WebCam.GetCamList(MainWebCamList);
-            WebCam.GetCamSettings(MainWebCamSettings);
-            comboBox3.Items.Add("No Ratio");
-            comboBox3.Items.Add("Passport");
-            comboBox3.SelectedIndex = 1;
-        }
-
-        //refresh button
-        private void rfsh_Click(object sender, EventArgs e)
-        {
-            WebCam.GetCamList(MainWebCamList);
-            WebCam.GetCamSettings(MainWebCamSettings);
         }
 
         //toggle start and stop button
@@ -43,22 +34,29 @@ namespace WebCamPassport
         {
             if (start.Text == "&Start")
             {
-                WebCam.StartWebCam();
-                label2.Text = "Device running...";
-                start.Text = "&Stop";
-                timer1.Enabled = true;
-
+                CamStart();
             }
             else
             {
-                timer1.Enabled = false;
-                WebCam.CloseVideoSource();
-                label2.Text = "Device stopped.";
-                start.Text = "&Start";
-                pictureBox1.Image = null;
+                CamStop();
             }
-         }
-        
+        }
+        private void CamStart()
+        {
+        WebCam.StartWebCam();
+                label2.Text = "Device running...";
+                start.Text = "&Stop";
+                timer1.Enabled = true;
+        }
+
+        private void CamStop()
+        {
+            timer1.Enabled = false;
+            WebCam.CloseVideoSource();
+            label2.Text = "Device stopped.";
+            start.Text = "&Start";
+            pictureBox1.Image = null;
+        }
 
         //take picture button
         private void takePic_Click(object sender, EventArgs e)
@@ -102,7 +100,6 @@ namespace WebCamPassport
             }
 
 
-            label1.Text = unscaled_p.X.ToString() + " " + unscaled_p.Y.ToString() + " " + unscaled_width.ToString() + " " + unscaled_height.ToString();
             Rectangle cropBoxUnscaled = new Rectangle(unscaled_p.X, unscaled_p.Y, unscaled_width, unscaled_height);
             Bitmap bmp = new Bitmap(pictureBox1.Image);
             croppedbmp = bmp.Clone(cropBoxUnscaled, bmp.PixelFormat);
@@ -133,7 +130,7 @@ namespace WebCamPassport
         {
             cropBox = new CropBox(new Rectangle(10, 10, 45, 55));
             cropBox.SetPictureBox(pictureBox1);
-            getRatio();
+            Options.getRatio();
             cropBox.allowDeformingDuringMovement = true;
             timer1.Enabled = false;
             WebCam.CloseVideoSource();
@@ -143,32 +140,15 @@ namespace WebCamPassport
             
         }
 
-        //GetRatio
-        private void getRatio ()
-        {
-            if (comboBox3.SelectedIndex == 0)
-            {
-                CropBox.ratioEnabled = false;
-            }
-            if (comboBox3.SelectedIndex == 1)
-            {
-                CropBox.ratioEnabled = true;
-                CropBox.ratio = 1.33f;
-            }
-
-        }
-
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            getRatio();
-        }
-
+      
         private void button1_Click(object sender, EventArgs e)
         {
             
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Images|*.png;*.bmp;*.jpg";
+            sfd.InitialDirectory = saveLocation;
+            sfd.Filter = "Image (*.jpg)|*.jpg|Image (*.bmp)|*.bmp";
             ImageFormat format = ImageFormat.Jpeg;
+            sfd.DefaultExt = "jpg";
             if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string ext = System.IO.Path.GetExtension(sfd.FileName);
@@ -179,10 +159,7 @@ namespace WebCamPassport
                         break;
                     case ".bmp":
                         format = ImageFormat.Bmp;
-                        break;
-                    case ".png":
-                        format = ImageFormat.Png;
-                        break;
+                        break;                    
                 }
                 snapShot.Image.Save(sfd.FileName, format);
             }
@@ -191,6 +168,35 @@ namespace WebCamPassport
         private void button2_Click(object sender, EventArgs e)
         {
             pictureBox1.Image = snapShot.Image;
+        }
+
+        private void options_Click(object sender, EventArgs e)
+        {
+            // Create a new instance of the Form2 class
+            Options settingsForm = new Options();
+
+            // Show the settings form
+            DialogResult dr = settingsForm.ShowDialog(this);
+            if (dr == DialogResult.Cancel)
+            {
+                settingsForm.Close();
+            }
+            else if (dr == DialogResult.OK)
+            {
+                saveLocation = Options.optionsLocation;
+                Properties.Settings.Default.WebCamDevice = Convert.ToString(settingsForm.OptionsWebCamList.SelectedItem);
+                Properties.Settings.Default.WebCamResolution = Convert.ToString(settingsForm.OptionsWebCamSettings.SelectedItem);
+                Properties.Settings.Default.Ratio = Convert.ToString(settingsForm.comboBox3.SelectedItem);
+                Properties.Settings.Default.SaveLocation = settingsForm.savePath.Text;
+                Properties.Settings.Default.Save();
+                settingsForm.Close();
+            }
+
+        }
+
+        private void mainSave_Click(object sender, EventArgs e)
+        {
+            snapShot.Image.Save(saveLocation + "Photo_" + DateTime.Now.ToString("yyyyMMdd_hhss") + ".jpg", ImageFormat.Jpeg);
         }
     }
 }

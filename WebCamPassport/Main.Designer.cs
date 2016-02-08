@@ -32,17 +32,14 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnSaveAs = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.cropPic = new System.Windows.Forms.Button();
             this.snapShot = new System.Windows.Forms.PictureBox();
             this.takePic = new System.Windows.Forms.Button();
-            this.MainWebCamSettings = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.MainWebCamList = new System.Windows.Forms.ComboBox();
             this.start = new System.Windows.Forms.Button();
-            this.rfsh = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.options = new System.Windows.Forms.Button();
+            this.mainSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.snapShot)).BeginInit();
@@ -63,17 +60,14 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.mainSave);
+            this.panel1.Controls.Add(this.options);
             this.panel1.Controls.Add(this.btnSaveAs);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.comboBox3);
             this.panel1.Controls.Add(this.cropPic);
             this.panel1.Controls.Add(this.snapShot);
             this.panel1.Controls.Add(this.takePic);
-            this.panel1.Controls.Add(this.MainWebCamSettings);
             this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.MainWebCamList);
             this.panel1.Controls.Add(this.start);
-            this.panel1.Controls.Add(this.rfsh);
             this.panel1.Location = new System.Drawing.Point(26, 12);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(246, 617);
@@ -88,25 +82,6 @@
             this.btnSaveAs.Text = "Save &As";
             this.btnSaveAs.UseVisualStyleBackColor = true;
             this.btnSaveAs.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 392);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "label1";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(32, 357);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(184, 21);
-            this.comboBox3.TabIndex = 7;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // cropPic
             // 
@@ -138,15 +113,6 @@
             this.takePic.UseVisualStyleBackColor = true;
             this.takePic.Click += new System.EventHandler(this.takePic_Click);
             // 
-            // MainWebCamSettings
-            // 
-            this.MainWebCamSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.MainWebCamSettings.FormattingEnabled = true;
-            this.MainWebCamSettings.Location = new System.Drawing.Point(30, 94);
-            this.MainWebCamSettings.Name = "MainWebCamSettings";
-            this.MainWebCamSettings.Size = new System.Drawing.Size(186, 21);
-            this.MainWebCamSettings.TabIndex = 2;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -155,15 +121,6 @@
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Opened";
-            // 
-            // MainWebCamList
-            // 
-            this.MainWebCamList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.MainWebCamList.FormattingEnabled = true;
-            this.MainWebCamList.Location = new System.Drawing.Point(30, 55);
-            this.MainWebCamList.Name = "MainWebCamList";
-            this.MainWebCamList.Size = new System.Drawing.Size(186, 21);
-            this.MainWebCamList.TabIndex = 2;
             // 
             // start
             // 
@@ -175,15 +132,25 @@
             this.start.UseVisualStyleBackColor = true;
             this.start.Click += new System.EventHandler(this.start_Click);
             // 
-            // rfsh
+            // options
             // 
-            this.rfsh.Location = new System.Drawing.Point(141, 140);
-            this.rfsh.Name = "rfsh";
-            this.rfsh.Size = new System.Drawing.Size(75, 23);
-            this.rfsh.TabIndex = 0;
-            this.rfsh.Text = "Refresh";
-            this.rfsh.UseVisualStyleBackColor = true;
-            this.rfsh.Click += new System.EventHandler(this.rfsh_Click);
+            this.options.Location = new System.Drawing.Point(30, 13);
+            this.options.Name = "options";
+            this.options.Size = new System.Drawing.Size(75, 23);
+            this.options.TabIndex = 10;
+            this.options.Text = "Options";
+            this.options.UseVisualStyleBackColor = true;
+            this.options.Click += new System.EventHandler(this.options_Click);
+            // 
+            // mainSave
+            // 
+            this.mainSave.Location = new System.Drawing.Point(30, 578);
+            this.mainSave.Name = "mainSave";
+            this.mainSave.Size = new System.Drawing.Size(75, 23);
+            this.mainSave.TabIndex = 2;
+            this.mainSave.Text = "&Save";
+            this.mainSave.UseVisualStyleBackColor = true;
+            this.mainSave.Click += new System.EventHandler(this.mainSave_Click);
             // 
             // Main
             // 
@@ -207,17 +174,14 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button start;
-        private System.Windows.Forms.Button rfsh;
-        private System.Windows.Forms.ComboBox MainWebCamList;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.ComboBox MainWebCamSettings;
         private System.Windows.Forms.Button takePic;
         private System.Windows.Forms.PictureBox snapShot;
         private System.Windows.Forms.Button cropPic;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSaveAs;
+        private System.Windows.Forms.Button options;
+        private System.Windows.Forms.Button mainSave;
     }
 }
 
