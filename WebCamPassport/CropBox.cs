@@ -34,7 +34,7 @@ namespace WebCamPassport
           //  LeftBottom,
           //  LeftUp,
           //  RightUp,
-            RightBottom,
+         //   RightBottom,
             None
 
         }
@@ -106,9 +106,10 @@ namespace WebCamPassport
 
         private void mPictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            Main snap = new Main();
+            //Main snap = new Main();
             mIsClick = false;
             mMove = false;
+            mPictureBox.Invalidate();
             //TakePic(pictureBox1, snapShot);
         }
 
@@ -143,11 +144,11 @@ namespace WebCamPassport
                //     rect.Height -= e.Y - oldY;
                //     testRatio();
                //     break;
-                case PosSizableRect.RightBottom:
-                    rect.Width += e.X - oldX;
-                    rect.Height += e.Y - oldY;
-                    testRatio();
-                    break;
+                //case PosSizableRect.RightBottom:
+                //    rect.Width += e.X - oldX;
+                //    rect.Height += e.Y - oldY;
+                //    testRatio();
+                //    break;
                 
                 default:
                     if (mMove)
@@ -228,8 +229,8 @@ namespace WebCamPassport
                 //case PosSizableRect.RightUp:
                 //    return CreateRectSizableNode(rect.X + rect.Width, rect.Y);
 
-                case PosSizableRect.RightBottom:
-                    return CreateRectSizableNode(rect.X + rect.Width, rect.Y + rect.Height);
+                //case PosSizableRect.RightBottom:
+                //    return CreateRectSizableNode(rect.X + rect.Width, rect.Y + rect.Height);
 
                 default:
                     return new Rectangle();
@@ -271,8 +272,8 @@ namespace WebCamPassport
                 //case PosSizableRect.RightUp:
                 //    return Cursors.SizeNESW;
 
-                case PosSizableRect.RightBottom:
-                    return Cursors.SizeNWSE;
+                //case PosSizableRect.RightBottom:
+                //    return Cursors.SizeNWSE;
                 
                 default:
                     return Cursors.Default;

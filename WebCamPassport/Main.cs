@@ -136,7 +136,7 @@ namespace WebCamPassport
         //Begin Crop
         private void cropPic_Click(object sender, EventArgs e)
         {
-            cropBox = new CropBox(new Rectangle(30, 30, 45, 55));
+            cropBox = new CropBox(new Rectangle(30, 30, 160, 212));
             cropBox.SetPictureBox(pictureBox1);
             Options.getRatio();
             cropBox.allowDeformingDuringMovement = true;
@@ -144,7 +144,7 @@ namespace WebCamPassport
             //WebCam.CloseVideoSource();
             //label2.Text = "Device stopped.";
             //start.Text = "&Start";
-            CamStop();
+            //CamStop();
             pictureBox1.Invalidate();
             //CropBox.TakePic(pictureBox1, snapShot);
         }
