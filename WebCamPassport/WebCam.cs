@@ -13,8 +13,8 @@ namespace WebCamPassport
     public class WebCam
     {
         //private static bool DeviceExist = false;
-        private static FilterInfoCollection VideoDevices;
-        private static VideoCaptureDevice videoSource;
+        public static FilterInfoCollection VideoDevices;
+        public static VideoCaptureDevice videoSource;
         private static ComboBox WebCamList;
         private static ComboBox WebCamSettings;
         public static PictureBox VideoImage;
@@ -75,7 +75,7 @@ namespace WebCamPassport
                     WebCamSettings.SelectedIndex = WebCamSettings.FindString(Properties.Settings.Default.WebCamResolution);
                 }
             }
-            catch (ApplicationException)
+            catch (ArgumentOutOfRangeException)
             {
                 //DeviceExist = false;
                 WebCamSettings.Items.Add("No capture device on your system");
@@ -85,27 +85,42 @@ namespace WebCamPassport
         //close the device safely
         public static void CloseVideoSource()
         {
-            if (!(videoSource == null))
-                if (videoSource.IsRunning)
-                {
-                    videoSource.Stop();
-                    videoSource = null;
-                }
+            if (videoSource != null && videoSource.IsRunning)
+            {
+                videoSource.SignalToStop();
+                videoSource = null;
+            }
         }
+
 
         //Start WebCam
 
         public static void StartWebCam()
         {
-            WebCam temp = new WebCam();
-            videoSource = new VideoCaptureDevice(VideoDevices[WebCamList.SelectedIndex].MonikerString);
-            videoSource.NewFrame += new NewFrameEventHandler(temp.video_NewFrame);
-            videoSource.VideoResolution = videoSource.VideoCapabilities[WebCamSettings.SelectedIndex];
-            videoSource.Start();
+            try
+            {
+                //WebCam temp = new WebCam();
+                videoSource = new VideoCaptureDevice(VideoDevices[WebCamList.SelectedIndex].MonikerString);
+                videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+                videoSource.VideoResolution = videoSource.VideoCapabilities[WebCamSettings.SelectedIndex];
+                videoSource.Start();
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                string message = "No Web Camera Detected.";
+                    string caption = "Fail State";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+                //if (result == System.Windows.Forms.DialogResult.OK)
+                //{
+                //    this.Close();
+                //}
+            }
         }
 
         //eventhandler if new frame is ready
-        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        public static void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
             Bitmap img = (Bitmap)eventArgs.Frame.Clone();
             VideoImage.Image = img;

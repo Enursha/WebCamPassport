@@ -17,21 +17,17 @@ namespace WebCamPassport
     {
         public static string saveLocation;
         CropBox cropBox;
-        Bitmap croppedbmp;
         
-
-
         public Main()
         {
             InitializeComponent();
             Options settingsForm = new Options();
-            //CropBox cropBox = new CropBox.TakePic();
             CropBox.pictureBox1 = pictureBox1;
-            CamStart();
             WebCam.GetCamListCombobox(settingsForm.OptionsWebCamList);
             WebCam.GetCamSettingsCombobox(settingsForm.OptionsWebCamSettings);
             WebCam.GetVideoImage(pictureBox1);
-            
+            CamStart();
+
         }
 
         //toggle start and stop button
@@ -46,12 +42,13 @@ namespace WebCamPassport
                 CamStop();
             }
         }
-        private void CamStart()
+
+        public void CamStart()
         {
-        WebCam.StartWebCam();
-                label2.Text = "Device running...";
-                start.Text = "&Stop";
-                timer1.Enabled = true;
+            WebCam.StartWebCam();
+            label2.Text = "Device running...";
+            start.Text = "&Stop";
+            timer1.Enabled = true;
         }
 
         private void CamStop()
@@ -127,8 +124,9 @@ namespace WebCamPassport
             label2.Text = "Device running... ";
         }
 
-        //prevent sudden close while device is running
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        
+
+        private void Main_Closing()
         {
             WebCam.CloseVideoSource();
         }
@@ -140,39 +138,11 @@ namespace WebCamPassport
             cropBox.SetPictureBox(pictureBox1);
             Options.getRatio();
             cropBox.allowDeformingDuringMovement = true;
-            //timer1.Enabled = false;
-            //WebCam.CloseVideoSource();
-            //label2.Text = "Device stopped.";
-            //start.Text = "&Start";
-            //CamStop();
             pictureBox1.Invalidate();
-            //CropBox.TakePic(pictureBox1, snapShot);
         }
 
       
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.InitialDirectory = saveLocation;
-            sfd.Filter = "Image (*.jpg)|*.jpg|Image (*.bmp)|*.bmp";
-            ImageFormat format = ImageFormat.Jpeg;
-            sfd.DefaultExt = "jpg";
-            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                string ext = System.IO.Path.GetExtension(sfd.FileName);
-                switch (ext)
-                {
-                    case ".jpg":
-                        format = ImageFormat.Jpeg;
-                        break;
-                    case ".bmp":
-                        format = ImageFormat.Bmp;
-                        break;                    
-                }
-                snapShot.Image.Save(sfd.FileName, format);
-            }
-        }
+       
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -206,8 +176,23 @@ namespace WebCamPassport
         private void mainSave_Click(object sender, EventArgs e)
         {
             CropBox.TakePic(pictureBox1, snapShot);
-            saveLocation = Properties.Settings.Default.SaveLocation;
-            snapShot.Image.Save(saveLocation + "\\Photo_" + DateTime.Now.ToString("yyyyMMdd_hh_mm_ss") + ".jpg", ImageFormat.Jpeg);
+
+            if (Properties.Settings.Default.SaveLocation == null)
+            {
+                saveLocation = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            }
+
+            else
+            {
+                saveLocation = Properties.Settings.Default.SaveLocation;
+            }
+
+            snapShot.Image.Save(saveLocation + "Photo_" + DateTime.Now.ToString("yyyyMMdd_hh_mm_ss") + ".jpg", ImageFormat.Jpeg);
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            WebCam.CloseVideoSource();
         }
     }
 }
