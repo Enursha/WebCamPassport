@@ -81,7 +81,9 @@ namespace WebCamPassport
 
         private void cropPic_Click(object sender, EventArgs e)
         {
-            cropBox = new CropBox(new Rectangle(30, 30, 160, 212));
+            int centreX = (pictureBox1.Height / 2) - (212 / 2);
+            int centreY = (pictureBox1.Width / 2) - (160 / 2);
+            cropBox = new CropBox(new Rectangle(centreY, centreX, 160, 212));
             cropBox.SetPictureBox(pictureBox1);
             //Options.GetRatio();
             cropBox.allowDeformingDuringMovement = true; //if mouse can set cropbox beond Main picturebox
