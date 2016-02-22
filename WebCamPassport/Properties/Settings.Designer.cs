@@ -61,13 +61,73 @@ namespace WebCamPassport.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Passport")]
         public string Ratio {
             get {
                 return ((string)(this["Ratio"]));
             }
             set {
                 this["Ratio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("45")]
+        public string scaleHeight {
+            get {
+                return ((string)(this["scaleHeight"]));
+            }
+            set {
+                this["scaleHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("35")]
+        public string scaleWidth {
+            get {
+                return ((string)(this["scaleWidth"]));
+            }
+            set {
+                this["scaleWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool scaleEnabled {
+            get {
+                return ((bool)(this["scaleEnabled"]));
+            }
+            set {
+                this["scaleEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool autoStart {
+            get {
+                return ((bool)(this["autoStart"]));
+            }
+            set {
+                this["autoStart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Custom")]
+        public string quality {
+            get {
+                return ((string)(this["quality"]));
+            }
+            set {
+                this["quality"] = value;
             }
         }
     }

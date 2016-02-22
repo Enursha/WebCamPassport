@@ -63,7 +63,7 @@ namespace WebCamPassport
                 //DeviceExist = true;
                 foreach (var capability in videoSource.VideoCapabilities)
                 {
-                    WebCamSettings.Items.Add(capability.FrameSize.ToString() + ":" + capability.MaximumFrameRate.ToString() + ":" + capability.BitCount.ToString());
+                    WebCamSettings.Items.Add(capability.FrameSize.Width.ToString() + " x " + capability.FrameSize.Height.ToString() + "  " + capability.AverageFrameRate.ToString() + " fps");
                 }
 
                 if (Properties.Settings.Default.WebCamResolution == null || Properties.Settings.Default.WebCamDevice != Convert.ToString(WebCamList.SelectedItem))
@@ -91,16 +91,13 @@ namespace WebCamPassport
                 videoSource = null;
             }
         }
-
-
-        //Start WebCam
-
+       
         public static void StartWebCam()
         {
             try
             {
-                //WebCam temp = new WebCam();
                 videoSource = new VideoCaptureDevice(VideoDevices[WebCamList.SelectedIndex].MonikerString);
+
                 videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
                 videoSource.VideoResolution = videoSource.VideoCapabilities[WebCamSettings.SelectedIndex];
                 videoSource.Start();

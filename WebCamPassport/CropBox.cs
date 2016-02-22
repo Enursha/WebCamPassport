@@ -17,7 +17,7 @@ namespace WebCamPassport
         private bool mMove = false;
         private int oldX;
         private int oldY;
-        private int sizeNodeRect = 5;
+        private int sizeNodeRect = 10;
         private Bitmap mBmp = null;
         private PosSizableRect nodeSelected = PosSizableRect.None;
         public static float ratio = 1.33f;
@@ -31,10 +31,10 @@ namespace WebCamPassport
 
         private enum PosSizableRect
         {
-          //  LeftBottom,
-          //  LeftUp,
-          //  RightUp,
-         //   RightBottom,
+            LeftBottom,
+            LeftUp,
+            RightUp,
+            RightBottom,
             None
 
         }
@@ -125,31 +125,70 @@ namespace WebCamPassport
 
             switch (nodeSelected)
             {
-               // case PosSizableRect.LeftUp:
-               //     rect.X += e.X - oldX;
-               //     rect.Width -= e.X - oldX;
-               //     rect.Y += e.Y - oldY;
-               //     rect.Height -= e.Y - oldY;
-               //     testRatio();
-               //     break;
-               //case PosSizableRect.LeftBottom:
-               //     rect.Width -= e.X - oldX;
-               //     rect.X += e.X - oldX;
-               //     rect.Height += e.Y - oldY;
-               //     testRatio();
-               //     break;
-               //case PosSizableRect.RightUp:
-               //     rect.Width += e.X - oldX;
-               //     rect.Y += e.Y - oldY;
-               //     rect.Height -= e.Y - oldY;
-               //     testRatio();
-               //     break;
-                //case PosSizableRect.RightBottom:
-                //    rect.Width += e.X - oldX;
-                //    rect.Height += e.Y - oldY;
-                //    testRatio();
-                //    break;
-                
+                case PosSizableRect.LeftUp:
+                    rect.X = e.X;
+                    rect.Y = e.Y;
+                    rect.Width = backupRect.Right - e.X;
+                    rect.Height = backupRect.Bottom - e.Y;
+                    if(ratioEnabled == true)
+                    {
+                        if (rect.Width > rect.Height)
+                        {
+                            rect.Height = (int)(rect.Width * ratio);
+                        }
+                        else
+                        {
+                            int newWidth = (int)(rect.Height / ratio);
+                            rect.X = rect.Right - newWidth;
+                            rect.Width = newWidth;
+                        }
+                    }
+                    break;
+                case PosSizableRect.LeftBottom:
+                    rect.X = e.X;
+                    rect.Y = backupRect.Y;
+                    rect.Width = backupRect.Right - e.X;
+                    rect.Height = e.Y - rect.Top;
+                    if (ratioEnabled == true)
+                    {
+                        if (rect.Width > rect.Height)
+                        {
+                            rect.Height = (int)(rect.Width * ratio);
+                        }
+                        else
+                        {
+                            int newWidth = (int)(rect.Height / ratio);
+                            rect.X = rect.Right - newWidth;
+                            rect.Width = newWidth;
+                        }
+                    }
+                    break;
+                case PosSizableRect.RightUp:
+                    rect.X = backupRect.X;
+                    rect.Y = e.Y;
+                    rect.Width = e.X - rect.Left;
+                    rect.Height = backupRect.Bottom - e.Y;
+                    if (ratioEnabled == true)
+                    {
+                        if (rect.Width > rect.Height)
+                        {
+                            int newHeight = (int)(rect.Width * ratio);
+                            rect.Y = rect.Bottom - newHeight;
+                            rect.Height = newHeight;
+                        }
+                        else
+                        {
+                            int newWidth = (int)(rect.Height / ratio);
+                            rect.Width = newWidth;
+                        }
+                    }
+                    break;
+                case PosSizableRect.RightBottom:
+                    rect.Width += e.X - oldX;
+                    rect.Height += e.Y - oldY;
+                    testRatio();
+                    break;
+
                 default:
                     if (mMove)
                     {
@@ -167,7 +206,7 @@ namespace WebCamPassport
             }
             
 
-            TestIfRectInsideArea();
+          //  TestIfRectInsideArea();
             mPictureBox.Invalidate();
         }
 
@@ -182,8 +221,6 @@ namespace WebCamPassport
                 }
             }
         }
-
-        
 
         private void TestIfRectInsideArea()
         {
@@ -220,17 +257,17 @@ namespace WebCamPassport
         {
             switch (p)
             {
-                //case PosSizableRect.LeftUp:
-                //    return CreateRectSizableNode(rect.X, rect.Y);
+                case PosSizableRect.LeftUp:
+                    return CreateRectSizableNode(rect.X, rect.Y);
 
-                //case PosSizableRect.LeftBottom:
-                //    return CreateRectSizableNode(rect.X, rect.Y + rect.Height);
+                case PosSizableRect.LeftBottom:
+                    return CreateRectSizableNode(rect.X, rect.Y + rect.Height);
 
-                //case PosSizableRect.RightUp:
-                //    return CreateRectSizableNode(rect.X + rect.Width, rect.Y);
+                case PosSizableRect.RightUp:
+                    return CreateRectSizableNode(rect.X + rect.Width, rect.Y);
 
-                //case PosSizableRect.RightBottom:
-                //    return CreateRectSizableNode(rect.X + rect.Width, rect.Y + rect.Height);
+                case PosSizableRect.RightBottom:
+                    return CreateRectSizableNode(rect.X + rect.Width, rect.Y + rect.Height);
 
                 default:
                     return new Rectangle();
@@ -263,18 +300,18 @@ namespace WebCamPassport
         {
             switch (p)
             {
-                //case PosSizableRect.LeftUp:
-                //    return Cursors.SizeNWSE;
-                
-                //case PosSizableRect.LeftBottom:
-                //    return Cursors.SizeNESW;
-                
-                //case PosSizableRect.RightUp:
-                //    return Cursors.SizeNESW;
+                case PosSizableRect.LeftUp:
+                    return Cursors.SizeNWSE;
 
-                //case PosSizableRect.RightBottom:
-                //    return Cursors.SizeNWSE;
-                
+                case PosSizableRect.LeftBottom:
+                    return Cursors.SizeNESW;
+
+                case PosSizableRect.RightUp:
+                    return Cursors.SizeNESW;
+
+                case PosSizableRect.RightBottom:
+                    return Cursors.SizeNWSE;
+
                 default:
                     return Cursors.Default;
             }
@@ -291,7 +328,7 @@ namespace WebCamPassport
             int unscaled_height = new int();
             int unscaled_width = new int();
 
-            //int w_i = new int();
+            int w_i = new int();
             int h_i = new int();
             int w_c = new int();
             int h_c = new int();
