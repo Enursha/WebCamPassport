@@ -15,8 +15,8 @@ namespace WebCamPassport
         public bool allowDeformingDuringMovement = false;
         private bool mIsClick = false;
         private bool mMove = false;
-        private int oldX;
-        private int oldY;
+        private static int oldX;
+        private static int oldY;
         private int sizeNodeRect = 10;
         private Bitmap mBmp = null;
         private PosSizableRect nodeSelected = PosSizableRect.None;
@@ -25,10 +25,7 @@ namespace WebCamPassport
         public static Bitmap croppedbmp;
         public static PictureBox pictureBox1 = new PictureBox();
         public static PictureBox snapShot = new PictureBox();
-        public static int w_i;
         
-
-
         private enum PosSizableRect
         {
             LeftBottom,
@@ -126,6 +123,7 @@ namespace WebCamPassport
             switch (nodeSelected)
             {
                 case PosSizableRect.LeftUp:
+                    mPictureBox.Cursor = Cursors.SizeNWSE;
                     rect.X = e.X;
                     rect.Y = e.Y;
                     rect.Width = backupRect.Right - e.X;
@@ -134,17 +132,21 @@ namespace WebCamPassport
                     {
                         if (rect.Width > rect.Height)
                         {
-                            rect.Height = (int)(rect.Width * ratio);
+                            int newHeight = (int)(rect.Width * ratio);
+                            rect.Y = rect.Bottom - newHeight;
+                            rect.Height = newHeight;
                         }
                         else
                         {
                             int newWidth = (int)(rect.Height / ratio);
                             rect.X = rect.Right - newWidth;
                             rect.Width = newWidth;
+
                         }
                     }
                     break;
                 case PosSizableRect.LeftBottom:
+                    mPictureBox.Cursor = Cursors.SizeNESW;
                     rect.X = e.X;
                     rect.Y = backupRect.Y;
                     rect.Width = backupRect.Right - e.X;
@@ -164,6 +166,7 @@ namespace WebCamPassport
                     }
                     break;
                 case PosSizableRect.RightUp:
+                    mPictureBox.Cursor = Cursors.SizeNESW;
                     rect.X = backupRect.X;
                     rect.Y = e.Y;
                     rect.Width = e.X - rect.Left;
@@ -184,9 +187,20 @@ namespace WebCamPassport
                     }
                     break;
                 case PosSizableRect.RightBottom:
+                    mPictureBox.Cursor = Cursors.SizeNWSE;
                     rect.Width += e.X - oldX;
                     rect.Height += e.Y - oldY;
-                    testRatio();
+                    if (ratioEnabled == true)
+                    {
+                        if (rect.Width > rect.Height)
+                        {
+                            rect.Height = (int)(rect.Width * ratio);
+                        }
+                        else
+                        {
+                            rect.Width = (int)(rect.Height / ratio);
+                        }
+                    }
                     break;
 
                 default:
@@ -200,6 +214,7 @@ namespace WebCamPassport
             oldX = e.X;
             oldY = e.Y;
 
+
             if (rect.Width < 5 || rect.Height < 5)
             {
                 rect = backupRect;
@@ -209,19 +224,7 @@ namespace WebCamPassport
           //  TestIfRectInsideArea();
             mPictureBox.Invalidate();
         }
-
-        //testRatio
-        private void testRatio()
-        {
-            if (ratioEnabled == true)
-            {
-                if (rect.Width != (int)(1f * rect.Height / ratio))
-                {
-                    rect.Width = (int)(1f * rect.Height / ratio);
-                }
-            }
-        }
-
+              
         private void TestIfRectInsideArea()
         {
             // Test if rectangle still inside the area.

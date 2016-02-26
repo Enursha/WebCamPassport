@@ -73,7 +73,7 @@ namespace WebCamPassport.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("45")]
+        [global::System.Configuration.DefaultSettingValueAttribute("160")]
         public string scaleHeight {
             get {
                 return ((string)(this["scaleHeight"]));
@@ -85,7 +85,7 @@ namespace WebCamPassport.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("35")]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
         public string scaleWidth {
             get {
                 return ((string)(this["scaleWidth"]));
