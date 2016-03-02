@@ -57,38 +57,40 @@
             // 
             // mainSave
             // 
-            this.mainSave.Location = new System.Drawing.Point(12, 230);
+            this.mainSave.Location = new System.Drawing.Point(12, 142);
             this.mainSave.Name = "mainSave";
             this.mainSave.Size = new System.Drawing.Size(135, 60);
             this.mainSave.TabIndex = 2;
-            this.mainSave.Text = "&Save";
+            this.mainSave.Text = "Step 2.\n\n&Save";
             this.mainSave.UseVisualStyleBackColor = true;
             this.mainSave.Click += new System.EventHandler(this.mainSave_Click);
             // 
             // options
             // 
-            this.options.Location = new System.Drawing.Point(12, 12);
+            this.options.Enabled = false;
+            this.options.Location = new System.Drawing.Point(12, 577);
             this.options.Name = "options";
             this.options.Size = new System.Drawing.Size(135, 52);
             this.options.TabIndex = 10;
             this.options.Text = "Options";
             this.options.UseVisualStyleBackColor = true;
+            this.options.Visible = false;
             this.options.Click += new System.EventHandler(this.options_Click);
             // 
             // cropPic
             // 
-            this.cropPic.Location = new System.Drawing.Point(12, 161);
+            this.cropPic.Location = new System.Drawing.Point(12, 73);
             this.cropPic.Name = "cropPic";
             this.cropPic.Size = new System.Drawing.Size(135, 63);
             this.cropPic.TabIndex = 6;
-            this.cropPic.Text = "Begin Crop";
+            this.cropPic.Text = "Step 1.\n\nBegin &Crop";
             this.cropPic.UseVisualStyleBackColor = true;
             this.cropPic.Click += new System.EventHandler(this.cropPic_Click);
             // 
             // snapShot
             // 
             this.snapShot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.snapShot.Location = new System.Drawing.Point(12, 317);
+            this.snapShot.Location = new System.Drawing.Point(12, 208);
             this.snapShot.Name = "snapShot";
             this.snapShot.Size = new System.Drawing.Size(135, 168);
             this.snapShot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -99,7 +101,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 500);
+            this.label2.Location = new System.Drawing.Point(12, 379);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 18);
             this.label2.TabIndex = 3;
@@ -107,7 +109,7 @@
             // 
             // start
             // 
-            this.start.Location = new System.Drawing.Point(12, 100);
+            this.start.Location = new System.Drawing.Point(12, 12);
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(135, 55);
             this.start.TabIndex = 1;
