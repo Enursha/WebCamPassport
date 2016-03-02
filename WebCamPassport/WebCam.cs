@@ -109,10 +109,6 @@ namespace WebCamPassport
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result;
                 result = MessageBox.Show(message, caption, buttons);
-                //if (result == System.Windows.Forms.DialogResult.OK)
-                //{
-                //    this.Close();
-                //}
             }
         }
 
@@ -125,6 +121,7 @@ namespace WebCamPassport
             GC.Collect();
         }
 
+        //Set picturebox to receive video
         public static void GetVideoImage(PictureBox p)
         {
           VideoImage = p;

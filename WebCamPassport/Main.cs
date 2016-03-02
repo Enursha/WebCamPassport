@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using AForge.Video;
-using AForge.Video.DirectShow;
 
 
 namespace WebCamPassport
@@ -35,7 +29,7 @@ namespace WebCamPassport
         //toggle start and stop button
         private void start_Click(object sender, EventArgs e)
         {
-            if (start.Text == "&Start")
+            if (start.Text == "Start &Webcam")
             {
                 CamStart();
             }
@@ -49,16 +43,14 @@ namespace WebCamPassport
         {
             WebCam.StartWebCam();
             label2.Text = "Camera running...";
-            start.Text = "&Stop";
-            timer1.Enabled = true;
+            start.Text = "Stop &Webcam";
         }
 
         private void CamStop()
         {
-            timer1.Enabled = false;
             WebCam.CloseVideoSource();
             label2.Text = "Camera stopped.";
-            start.Text = "&Start";
+            start.Text = "Start &Webcam";
             pictureBox1.Image = null;
         }
 

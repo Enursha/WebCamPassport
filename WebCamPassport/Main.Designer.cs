@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.mainSave = new System.Windows.Forms.Button();
@@ -37,7 +36,6 @@
             this.snapShot = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.start = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitter1 = new System.Windows.Forms.Splitter();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.snapShot)).BeginInit();
@@ -83,13 +81,12 @@
             this.cropPic.Name = "cropPic";
             this.cropPic.Size = new System.Drawing.Size(135, 63);
             this.cropPic.TabIndex = 6;
-            this.cropPic.Text = "Begin Crop";
+            this.cropPic.Text = "Begin &Crop";
             this.cropPic.UseVisualStyleBackColor = true;
             this.cropPic.Click += new System.EventHandler(this.cropPic_Click);
             // 
             // snapShot
             // 
-            this.snapShot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.snapShot.Location = new System.Drawing.Point(12, 317);
             this.snapShot.Name = "snapShot";
             this.snapShot.Size = new System.Drawing.Size(135, 168);
@@ -113,7 +110,7 @@
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(135, 55);
             this.start.TabIndex = 1;
-            this.start.Text = "&Start";
+            this.start.Text = "Start &Webcam";
             this.start.UseVisualStyleBackColor = true;
             this.start.Click += new System.EventHandler(this.start_Click);
             // 
@@ -154,7 +151,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button start;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button cropPic;
         private System.Windows.Forms.Button options;
         private System.Windows.Forms.Button mainSave;
