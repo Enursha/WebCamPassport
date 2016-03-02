@@ -111,7 +111,7 @@
             this.start.Name = "start";
             this.start.Size = new System.Drawing.Size(135, 55);
             this.start.TabIndex = 1;
-            this.start.Text = "&Start";
+            this.start.Text = "Start &Webcam";
             this.start.UseVisualStyleBackColor = true;
             this.start.Click += new System.EventHandler(this.start_Click);
             // 

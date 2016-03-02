@@ -123,6 +123,12 @@ namespace WebCamPassport
             VideoImage.Image = img;
             VideoImage.Invalidate();
             GC.Collect();
-        }               
+        }
+
+        //Set picturebox to receive video
+        public static void GetVideoImage(PictureBox p)
+        {
+            VideoImage = p;
+        }
+        }
     }
-}

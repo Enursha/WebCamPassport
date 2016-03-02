@@ -29,7 +29,7 @@ namespace WebCamPassport
         //toggle start and stop button
         private void start_Click(object sender, EventArgs e)
         {
-            if (start.Text == "&Start")
+            if (start.Text == "Start &Webcam")
             {
                 CamStart();
             }
@@ -43,14 +43,14 @@ namespace WebCamPassport
         {
             WebCam.StartWebCam();
             label2.Text = "Camera running...";
-            start.Text = "&Stop";
+            start.Text = "Stop &Webcam";
         }
 
         private void CamStop()
         {
             WebCam.CloseVideoSource();
             label2.Text = "Camera stopped.";
-            start.Text = "&Start";
+            start.Text = "Start &Webcam";
             pictureBox1.Image = null;
         }
 
