@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.mainSave = new System.Windows.Forms.Button();
@@ -37,7 +36,6 @@
             this.snapShot = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.start = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.splitter1 = new System.Windows.Forms.Splitter();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.snapShot)).BeginInit();
@@ -154,7 +152,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button start;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button cropPic;
         private System.Windows.Forms.Button options;
         private System.Windows.Forms.Button mainSave;
